@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1> Tours</h1>
+
+<div id="container">
+
+    <!--    <div>-->
+    <!--        <h2>Hata yoga 1hr</h2>-->
+    <!--    </div>-->
+
+    <!--    <div>-->
+    <!--        <h2>Hata yoga 2hr</h2>-->
+    <!--    </div>-->
+
+</div>
+
+<form id="createTour">
+    <input name="name" type="text" placeholder="name">
+    <input type="submit">
+</form>
+
+<script>
+    const form = document.getElementById('createTour');
+
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const name = form.elements['name'];
+        console.log(name.value)
+        fetch('http://127.0.0.1:8000/api/tours/', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({nombre: name.value}),
+        }).then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    });
+
+
+    fetch('http://127.0.0.1:8000/api/tours', {
+        method: "GET",
+    })
+        .then(response => response.json())
+        .then(data => {
+            for (let i = 0; i < data.length; i++) {
+                let div = document.createElement("div");
+                let h2 = document.createElement("h2");
+                let text = document.createTextNode(data[i].nombre)
+                h2.appendChild(text)
+                div.appendChild(h2)
+                console.log(data[i].name)
+                document.getElementById("container").appendChild(div)
+            }
+        });
+
+
+</script>
+
+</body>
+</html>
